@@ -878,6 +878,11 @@ final public class Platform {
     public static synchronized boolean isTlsV1Supported() {
         return ENABLED_TLS_V1;
     }
+
+    static String getTlsV1DeprecationNote() {
+        return "";
+    }
+
     public static boolean isPakeSupported() {
         return false;
     }

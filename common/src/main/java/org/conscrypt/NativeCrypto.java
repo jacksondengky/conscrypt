@@ -1587,7 +1587,14 @@ public final class NativeCrypto {
                 throw new IllegalArgumentException("protocols contains null");
             }
             if (!Arrays.asList(SUPPORTED_PROTOCOLS).contains(protocol)) {
-                throw new IllegalArgumentException("protocol " + protocol + " is not supported");
+                String message = "protocol " + protocol + " is not supported";
+                if (DEPRECATED_PROTOCOL_TLSV1.equals(protocol)
+                        || DEPRECATED_PROTOCOL_TLSV1_1.equals(protocol)) {
+                    message += ": TLSv1 and TLSv1.1 are deprecated and can no longer be enabled"
+                            + Platform.getTlsV1DeprecationNote()
+                            + "; remove them from the requested protocols";
+                }
+                throw new IllegalArgumentException(message);
             }
         }
         return protocols;

@@ -640,6 +640,11 @@ final public class Platform {
         return ENABLED_TLS_V1;
     }
 
+    // Keep in sync with the targetSdkVersion threshold in isTlsV1Filtered().
+    static String getTlsV1DeprecationNote() {
+        return " for apps targeting API level 36 or higher";
+    }
+
     public static boolean isPakeSupported() {
         return true;
     }
