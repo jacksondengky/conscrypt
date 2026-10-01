@@ -790,6 +790,10 @@ final public class Platform {
         return ENABLED_TLS_V1;
     }
 
+    static String getTlsV1DeprecationNote() {
+        return "";
+    }
+
     public static boolean isPakeSupported() {
         return false;
     }

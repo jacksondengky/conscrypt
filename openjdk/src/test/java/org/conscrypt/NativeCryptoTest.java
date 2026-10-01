@@ -5236,4 +5236,24 @@ public class NativeCryptoTest {
             NativeCrypto.asn1_read_free(cbs);
         }
     }
+
+    @Test
+    public void checkEnabledProtocols_deprecatedProtocol_explainsDeprecation() {
+        assumeFalse(TestUtils.isTlsV1Supported());
+        for (String protocol : new String[] {"TLSv1", "TLSv1.1"}) {
+            IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                    () -> NativeCrypto.checkEnabledProtocols(new String[] {protocol}));
+            assertTrue(e.getMessage().startsWith("protocol " + protocol + " is not supported"));
+            assertTrue(e.getMessage().contains("deprecated"));
+            // The API level note is specific to the Android platform build.
+            assertFalse(e.getMessage().contains("API level"));
+        }
+    }
+
+    @Test
+    public void checkEnabledProtocols_unknownProtocol_keepsGenericMessage() {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                () -> NativeCrypto.checkEnabledProtocols(new String[] {"TLSv9"}));
+        assertEquals("protocol TLSv9 is not supported", e.getMessage());
+    }
 }

@@ -98,9 +98,12 @@ public class TlsDeprecationTest {
         TestSSLContext context = TestSSLContext.create();
         final SSLSocket client =
                 (SSLSocket) context.clientContext.getSocketFactory().createSocket();
-        assertThrows(
+        IllegalArgumentException e = assertThrows(
                 IllegalArgumentException.class,
                 () -> client.setEnabledProtocols(new String[] {"TLSv1", "TLSv1.1", "TLSv1.2"}));
+        assertTrue(e.getMessage().startsWith("protocol TLSv1 is not supported"));
+        assertTrue(e.getMessage().contains("deprecated"));
+        assertTrue(e.getMessage().contains("API level 36"));
     }
 
     @Test
